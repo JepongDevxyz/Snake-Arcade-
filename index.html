@@ -242,7 +242,7 @@
       border-radius: 8px;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
       max-width: 100%;
-      max-height: 28vh;
+      max-height: 38vh;
       aspect-ratio: 1 / 1;
       object-fit: contain;
     }
@@ -337,13 +337,13 @@
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      margin-top: 2px;
+      margin-top: 4px;
       gap: 10px;
     }
 
     .joystick-container {
-      width: 65px;
-      height: 65px;
+      width: 75px;
+      height: 75px;
       background: #1f2937;
       border: 2px solid #374151;
       border-radius: 50%;
@@ -355,8 +355,8 @@
     }
 
     .joystick-stick {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       background: #10b981;
       border-radius: 50%;
       position: absolute;
@@ -366,12 +366,12 @@
     }
 
     .boost-btn {
-      width: 58px;
-      height: 58px;
+      width: 65px;
+      height: 65px;
       background: linear-gradient(135deg, #f59e0b, #ef4444);
       border: 2px solid #fcf26b;
       color: #ffffff;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 900;
       border-radius: 50%;
       cursor: pointer;
@@ -389,22 +389,25 @@
       box-shadow: 0 0 20px rgba(239, 68, 68, 0.9);
     }
 
-    .boost-btn span { font-size: 13px; line-height: 1; }
+    .boost-btn span { font-size: 15px; line-height: 1; }
 
     .restart-btn {
-      margin-top: 2px;
+      display: none;
+      margin-top: 4px;
       background: #ef4444;
       border: none;
       color: #ffffff;
-      padding: 6px;
-      font-size: 11px;
-      font-weight: 600;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
       width: 100%;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
     }
 
     .restart-btn:hover { background: #dc2626; }
+    .restart-btn.show { display: block; }
   </style>
 </head>
 <body>
@@ -482,7 +485,7 @@
       </button>
     </div>
 
-    <button class="restart-btn" onclick="resetGame()">Ulitin / Restart Game</button>
+    <button class="restart-btn" id="restartBtn" onclick="resetGame()">Ulitin / Restart Game</button>
   </div>
 
   <audio id="remoteAudio" autoplay></audio>
@@ -561,6 +564,7 @@
     const myRoomIdEl = document.getElementById('myRoomId');
     const micToggleBtn = document.getElementById('micToggleBtn');
     const remoteAudio = document.getElementById('remoteAudio');
+    const restartBtn = document.getElementById('restartBtn');
 
     const chatMessages = document.getElementById('chatMessages');
     const chatInput = document.getElementById('chatInput');
@@ -954,6 +958,12 @@
       p2MultEl.textContent = p2DoubleTimer > 0 ? '(2X!)' : '';
       p1LivesEl.textContent = '❤️'.repeat(Math.max(0, p1Lives)) || '💀';
       p2LivesEl.textContent = '❤️'.repeat(Math.max(0, p2Lives)) || '💀';
+
+      if (isGameOver) {
+        restartBtn.classList.add('show');
+      } else {
+        restartBtn.classList.remove('show');
+      }
     }
 
     function draw() {
@@ -1046,7 +1056,7 @@
 
         ctx.fillStyle = '#9ca3af';
         ctx.font = `${subFontSize}px sans-serif`;
-        ctx.fillText('Pindutin ang Restart para maglaro uli', canvas.width / 2, boxY + boxHeight * 0.68);
+        ctx.fillText('Pindutin ang Restart sa ibaba', canvas.width / 2, boxY + boxHeight * 0.68);
       }
     }
 
@@ -1066,6 +1076,7 @@
       p1EmoteData = null; p2EmoteData = null;
 
       resetPlayer1(); resetPlayer2(); spawnFood();
+      updateUI();
 
       if (isHost && conn && conn.open) {
         conn.send({
@@ -1195,7 +1206,7 @@
       const centerY = rect.top + rect.height / 2;
       let deltaX = touch.clientX - centerX;
       let deltaY = touch.clientY - centerY;
-      const distance = Math.min(Math.hypot(deltaX, deltaY), 24);
+      const distance = Math.min(Math.hypot(deltaX, deltaY), 28);
       const angle = Math.atan2(deltaY, deltaX);
       
       stick.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
