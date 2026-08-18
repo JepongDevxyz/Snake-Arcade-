@@ -4,6 +4,73 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Neon Snake Arcade - Swipe Gestures & Multi-Touch</title>
+  <script>
+  window.addEventListener('load', async function() {
+    const preloader = document.getElementById('preloader');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const spinner = document.getElementById('loaderSpinner');
+
+    const startTime = Date.now();
+    let isSiteActive = false;
+
+    // Subukang i-check ang status
+    try {
+      // Kung binuksan lang bilang local file (file://), ituturing itong active para sa testing
+      if (window.location.protocol === 'file:') {
+        isSiteActive = true;
+      } else {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+        const response = await fetch(window.location.href, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (response.ok || response.status < 400) {
+          isSiteActive = true;
+        }
+      }
+    } catch (error) {
+      isSiteActive = false;
+    }
+
+    // Maghintay muna nang kahit 1.5 seconds para makita ng user na nag "Checking site status..." muna
+    const elapsed = Date.now() - startTime;
+    if (elapsed < 1500) {
+      await new Promise(resolve => setTimeout(resolve, 1500 - elapsed));
+    }
+
+    // PAGKATAPOS MAG-CHECK: Dito pa lang magpapalit ng status badge
+    if (isSiteActive) {
+      statusDot.className = 'status-dot active';
+      statusText.innerText = 'Site Active';
+      statusText.style.color = '#30d158';
+
+      // Kwentahin ang natitirang oras para makumpleto ang 5 seconds total delay
+      const totalElapsed = Date.now() - startTime;
+      const remainingTime = Math.max(0, 5000 - totalElapsed);
+
+      setTimeout(function() {
+        preloader.classList.add('preloader-hidden');
+      }, remainingTime);
+
+    } else {
+      statusDot.className = 'status-dot down';
+      statusText.innerText = 'Site Down / Offline';
+      statusText.style.color = '#ff3b30';
+      
+      // Magiging pula ang spinner pero tuloy-tuloy pa rin ang ikot
+      spinner.style.borderTopColor = '#ff3b30';
+    }
+  });
+</script>
+<!-- ==================== PRELOADER END ==================== -->
+
   <!-- PeerJS Library -->
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <style>
@@ -656,69 +723,4 @@
           localStream.getTracks().forEach(track => track.enabled = !track.enabled);
           const isEnabled = localStream.getAudioTracks()[0]
 
-          <script>
-  window.addEventListener('load', async function() {
-    const preloader = document.getElementById('preloader');
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
-    const spinner = document.getElementById('loaderSpinner');
-
-    const startTime = Date.now();
-    let isSiteActive = false;
-
-    // Subukang i-check ang status
-    try {
-      // Kung binuksan lang bilang local file (file://), ituturing itong active para sa testing
-      if (window.location.protocol === 'file:') {
-        isSiteActive = true;
-      } else {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-        const response = await fetch(window.location.href, {
-          method: 'GET',
-          cache: 'no-store',
-          signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-
-        if (response.ok || response.status < 400) {
-          isSiteActive = true;
-        }
-      }
-    } catch (error) {
-      isSiteActive = false;
-    }
-
-    // Maghintay muna nang kahit 1.5 seconds para makita ng user na nag "Checking site status..." muna
-    const elapsed = Date.now() - startTime;
-    if (elapsed < 1500) {
-      await new Promise(resolve => setTimeout(resolve, 1500 - elapsed));
-    }
-
-    // PAGKATAPOS MAG-CHECK: Dito pa lang magpapalit ng status badge
-    if (isSiteActive) {
-      statusDot.className = 'status-dot active';
-      statusText.innerText = 'Site Active';
-      statusText.style.color = '#30d158';
-
-      // Kwentahin ang natitirang oras para makumpleto ang 5 seconds total delay
-      const totalElapsed = Date.now() - startTime;
-      const remainingTime = Math.max(0, 5000 - totalElapsed);
-
-      setTimeout(function() {
-        preloader.classList.add('preloader-hidden');
-      }, remainingTime);
-
-    } else {
-      statusDot.className = 'status-dot down';
-      statusText.innerText = 'Site Down / Offline';
-      statusText.style.color = '#ff3b30';
-      
-      // Magiging pula ang spinner pero tuloy-tuloy pa rin ang ikot
-      spinner.style.borderTopColor = '#ff3b30';
-    }
-  });
-</script>
-<!-- ==================== PRELOADER END ==================== -->
+          
