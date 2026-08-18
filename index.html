@@ -647,33 +647,67 @@
       }
     }
 
-    let boostOsc = null;
+    /* REALISTIC SCI-FI JET ENGINE BOOST SFX */
+    let boostSubOsc = null;
+    let boostHighOsc = null;
     let boostGain = null;
+    let boostLfo = null;
 
     function startBoostSound() {
       initAudio();
-      if (!audioCtx || boostOsc) return;
-      boostOsc = audioCtx.createOscillator();
+      if (!audioCtx || boostSubOsc) return;
+
+      const now = audioCtx.currentTime;
+
       boostGain = audioCtx.createGain();
-      boostOsc.type = 'sawtooth';
-      boostOsc.frequency.setValueAtTime(120, audioCtx.currentTime);
-      boostOsc.frequency.linearRampToValueAtTime(220, audioCtx.currentTime + 0.3);
-      boostGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-      boostOsc.connect(boostGain);
+      boostGain.gain.setValueAtTime(0.01, now);
+      boostGain.gain.linearRampToValueAtTime(0.12, now + 0.15);
+
+      // Low Pulsating Bass Oscillator
+      boostSubOsc = audioCtx.createOscillator();
+      boostSubOsc.type = 'sawtooth';
+      boostSubOsc.frequency.setValueAtTime(60, now);
+      boostSubOsc.frequency.exponentialRampToValueAtTime(140, now + 0.4);
+
+      // High Modulation Sci-Fi Jet Oscillator
+      boostHighOsc = audioCtx.createOscillator();
+      boostHighOsc.type = 'triangle';
+      boostHighOsc.frequency.setValueAtTime(180, now);
+      boostHighOsc.frequency.exponentialRampToValueAtTime(450, now + 0.4);
+
+      // Tremolo LFO for pulsating engine effect
+      boostLfo = audioCtx.createOscillator();
+      boostLfo.frequency.setValueAtTime(25, now);
+      const lfoGain = audioCtx.createGain();
+      lfoGain.gain.setValueAtTime(0.03, now);
+
+      boostLfo.connect(lfoGain);
+      lfoGain.connect(boostGain.gain);
+
+      boostSubOsc.connect(boostGain);
+      boostHighOsc.connect(boostGain);
       boostGain.connect(audioCtx.destination);
-      boostOsc.start();
+
+      boostSubOsc.start(now);
+      boostHighOsc.start(now);
+      boostLfo.start(now);
     }
 
     function stopBoostSound() {
       if (boostGain && audioCtx) {
-        boostGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        const now = audioCtx.currentTime;
+        boostGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         setTimeout(() => {
-          if (boostOsc) {
-            boostOsc.stop();
-            boostOsc.disconnect();
-            boostOsc = null;
+          if (boostSubOsc) {
+            boostSubOsc.stop(); boostSubOsc.disconnect(); boostSubOsc = null;
           }
-        }, 100);
+          if (boostHighOsc) {
+            boostHighOsc.stop(); boostHighOsc.disconnect(); boostHighOsc = null;
+          }
+          if (boostLfo) {
+            boostLfo.stop(); boostLfo.disconnect(); boostLfo = null;
+          }
+        }, 120);
       }
     }
 
@@ -980,14 +1014,33 @@
         if (p2EmoteData.opacity <= 0) p2EmoteData = null;
       }
 
+      /* DYNAMIC DYNAMICALLY SCALED GAME OVER BOX */
       if (isGameOver) {
-        ctx.fillStyle = 'rgba(3, 7, 18, 0.88)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
-        ctx.strokeRect(30, canvas.height / 2 - 50, canvas.width - 60, 100);
-        ctx.fillStyle = '#f59e0b'; ctx.font = '900 18px sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText(winnerMessage, canvas.width / 2, canvas.height / 2 - 10);
-        ctx.fillStyle = '#9ca3af'; ctx.font = '12px sans-serif';
-        ctx.fillText('Pindutin ang Restart para maglaro uli', canvas.width / 2, canvas.height / 2 + 20);
+        ctx.fillStyle = 'rgba(3, 7, 18, 0.88)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const boxWidth = canvas.width * 0.85;
+        const boxHeight = canvas.height * 0.40;
+        const boxX = (canvas.width - boxWidth) / 2;
+        const boxY = (canvas.height - boxHeight) / 2;
+
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+
+        // Responsive Font Sizing
+        const titleFontSize = Math.floor(canvas.width * 0.052);
+        const subFontSize = Math.floor(canvas.width * 0.035);
+
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = `900 ${titleFontSize}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(winnerMessage, canvas.width / 2, boxY + boxHeight * 0.38);
+
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `${subFontSize}px sans-serif`;
+        ctx.fillText('Pindutin ang Restart para maglaro uli', canvas.width / 2, boxY + boxHeight * 0.68);
       }
     }
 
