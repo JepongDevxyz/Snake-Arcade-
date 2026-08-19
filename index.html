@@ -116,23 +116,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 4px;
+      padding: 0;
     }
 
     .game-card {
       background: #111827;
       border: 1px solid #1f2937;
-      border-radius: 12px;
+      border-radius: 0px;
       padding: 8px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      max-width: 440px;
-      width: 100%;
-      height: 100%;
-      max-height: 100dvh;
+      width: 100vw;
+      height: 100dvh;
+      max-width: 100vw;
     }
 
     .header {
@@ -141,8 +140,9 @@
       width: 100%;
       margin-bottom: 2px;
       font-weight: 700;
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.5px;
+      padding: 0 4px;
     }
 
     .player-status-box {
@@ -152,8 +152,8 @@
     }
 
     .score-box { color: #10b981; }
-    .score-box2 { color: #3b82f6; }
-    .lives-display { font-size: 10px; }
+    .score-box2 { color: #3b82f6; text-align: right; }
+    .lives-display { font-size: 12px; }
 
     .room-container {
       width: 100%;
@@ -174,9 +174,9 @@
       background: #030712;
       border: 1px solid #374151;
       color: #fff;
-      padding: 4px;
+      padding: 6px;
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 12px;
       text-transform: uppercase;
       text-align: center;
       font-weight: bold;
@@ -188,10 +188,10 @@
       background: #3b82f6;
       border: none;
       color: #fff;
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
       font-weight: bold;
-      font-size: 11px;
+      font-size: 12px;
       cursor: pointer;
     }
 
@@ -199,7 +199,7 @@
       display: flex;
       gap: 4px;
       width: 100%;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
     .voice-btn {
@@ -207,9 +207,9 @@
       background: #10b981;
       border: none;
       color: #fff;
-      padding: 4px;
+      padding: 6px;
       border-radius: 6px;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
@@ -219,6 +219,25 @@
     }
 
     .voice-btn.active { background: #ef4444; }
+
+    .action-bar {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      margin-bottom: 4px;
+    }
+
+    .action-btn {
+      flex: 1;
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #fff;
+      padding: 6px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
     .status-text {
       font-size: 10px;
@@ -232,8 +251,9 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      flex: 1 1 auto;
+      flex: 1;
       min-height: 0;
+      padding: 4px;
     }
 
     canvas {
@@ -241,95 +261,11 @@
       border: 2px solid #374151;
       border-radius: 8px;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
-      max-width: 100%;
-      max-height: 38vh;
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
       aspect-ratio: 1 / 1;
       object-fit: contain;
-    }
-
-    .emote-bar {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-      background: #030712;
-      border: 1px solid #374151;
-      border-radius: 6px;
-      padding: 2px;
-      margin-top: 2px;
-    }
-
-    .emote-btn {
-      background: #1f2937;
-      border: 1px solid #374151;
-      font-size: 14px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: transform 0.05s, background 0.05s;
-    }
-
-    .emote-btn:active, .emote-btn.active {
-      transform: scale(1.2);
-      background: #3b82f6;
-    }
-
-    .chat-container {
-      width: 100%;
-      background: #030712;
-      border: 1px solid #374151;
-      border-radius: 6px;
-      margin-top: 2px;
-      padding: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .chat-messages {
-      height: 28px;
-      overflow-y: auto;
-      font-size: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding-right: 2px;
-    }
-
-    .chat-msg {
-      line-height: 1.1;
-      word-break: break-word;
-    }
-
-    .chat-msg.p1 { color: #10b981; }
-    .chat-msg.p2 { color: #3b82f6; }
-    .chat-msg.system { color: #9ca3af; font-style: italic; }
-
-    .chat-input-box {
-      display: flex;
-      gap: 4px;
-    }
-
-    .chat-input-box input {
-      flex: 1;
-      background: #111827;
-      border: 1px solid #374151;
-      color: #fff;
-      padding: 4px 6px;
-      border-radius: 4px;
-      font-size: 10px;
-      touch-action: auto;
-      user-select: text;
-    }
-
-    .chat-send-btn {
-      background: #10b981;
-      border: none;
-      color: #fff;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: bold;
-      cursor: pointer;
     }
 
     .controls-wrapper {
@@ -337,13 +273,14 @@
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      margin-top: 4px;
-      gap: 10px;
+      margin-top: auto;
+      padding: 10px 0;
+      gap: 20px;
     }
 
     .joystick-container {
-      width: 75px;
-      height: 75px;
+      width: 90px;
+      height: 90px;
       background: #1f2937;
       border: 2px solid #374151;
       border-radius: 50%;
@@ -355,8 +292,8 @@
     }
 
     .joystick-stick {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       background: #10b981;
       border-radius: 50%;
       position: absolute;
@@ -366,12 +303,12 @@
     }
 
     .boost-btn {
-      width: 65px;
-      height: 65px;
+      width: 80px;
+      height: 80px;
       background: linear-gradient(135deg, #f59e0b, #ef4444);
       border: 2px solid #fcf26b;
       color: #ffffff;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 900;
       border-radius: 50%;
       cursor: pointer;
@@ -389,16 +326,16 @@
       box-shadow: 0 0 20px rgba(239, 68, 68, 0.9);
     }
 
-    .boost-btn span { font-size: 15px; line-height: 1; }
+    .boost-btn span { font-size: 18px; line-height: 1; }
 
     .restart-btn {
       display: none;
-      margin-top: 4px;
+      margin-top: 6px;
       background: #ef4444;
       border: none;
       color: #ffffff;
-      padding: 8px;
-      font-size: 12px;
+      padding: 10px;
+      font-size: 14px;
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
@@ -408,6 +345,130 @@
 
     .restart-btn:hover { background: #dc2626; }
     .restart-btn.show { display: block; }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 12px;
+      width: 90%;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .emote-bar {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      background: #030712;
+      border: 1px solid #374151;
+      border-radius: 6px;
+      padding: 6px;
+    }
+
+    .emote-btn {
+      background: #1f2937;
+      border: 1px solid #374151;
+      font-size: 18px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .emote-btn:active, .emote-btn.active {
+      transform: scale(1.2);
+      background: #3b82f6;
+    }
+
+    .chat-messages {
+      height: 120px;
+      overflow-y: auto;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px;
+      background: #030712;
+      border: 1px solid #374151;
+      border-radius: 6px;
+    }
+
+    .chat-msg {
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .chat-msg.p1 { color: #10b981; }
+    .chat-msg.p2 { color: #3b82f6; }
+    .chat-msg.system { color: #9ca3af; font-style: italic; }
+
+    .chat-input-box {
+      display: flex;
+      gap: 4px;
+    }
+
+    .chat-input-box input {
+      flex: 1;
+      background: #030712;
+      border: 1px solid #374151;
+      color: #fff;
+      padding: 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      touch-action: auto;
+      user-select: text;
+    }
+
+    .chat-send-btn {
+      background: #10b981;
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -439,6 +500,11 @@
       </button>
     </div>
 
+    <div class="action-bar">
+      <button class="action-btn" onclick="toggleModal('chatModal')">💬 Open Chat</button>
+      <button class="action-btn" onclick="toggleModal('emoteModal')">😀 Send Emote</button>
+    </div>
+
     <div class="header">
       <div class="player-status-box score-box">
         <div>P1: <span id="score">0</span> <small id="p1Multiplier"></small></div>
@@ -455,25 +521,6 @@
       <canvas id="gameCanvas" width="320" height="320"></canvas>
     </div>
 
-    <div class="emote-bar" id="emoteBar">
-      <button class="emote-btn" data-emoji="😎">😎</button>
-      <button class="emote-btn" data-emoji="😂">😂</button>
-      <button class="emote-btn" data-emoji="💩">💩</button>
-      <button class="emote-btn" data-emoji="🔥">🔥</button>
-      <button class="emote-btn" data-emoji="💀">💀</button>
-      <button class="emote-btn" data-emoji="👑">👑</button>
-    </div>
-
-    <div class="chat-container">
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg system">System: Swipe screen or use joystick to play!</div>
-      </div>
-      <div class="chat-input-box">
-        <input type="text" id="chatInput" placeholder="Type a message..." onkeydown="handleChatKeyDown(event)">
-        <button class="chat-send-btn" onclick="sendChatMessage()">Send</button>
-      </div>
-    </div>
-
     <div class="controls-wrapper">
       <div class="joystick-container" id="joystick">
         <div class="joystick-stick" id="stick"></div>
@@ -485,7 +532,42 @@
       </button>
     </div>
 
-    <button class="restart-btn" id="restartBtn" onclick="resetGame()">Ulitin / Restart Game</button>
+    <button class="restart-btn" id="restartBtn" onclick="requestRestart()">Ulitin / Restart Game</button>
+  </div>
+
+  <!-- ==================== CHAT MODAL ==================== -->
+  <div class="modal-overlay" id="chatModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>Game Chat</span>
+        <button class="modal-close" onclick="toggleModal('chatModal')">✕</button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg system">System: Swipe screen or use joystick to play! Tap & hold canvas to boost!</div>
+      </div>
+      <div class="chat-input-box">
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeydown="handleChatKeyDown(event)">
+        <button class="chat-send-btn" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== EMOTE MODAL ==================== -->
+  <div class="modal-overlay" id="emoteModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>Select Emote</span>
+        <button class="modal-close" onclick="toggleModal('emoteModal')">✕</button>
+      </div>
+      <div class="emote-bar">
+        <button class="emote-btn" data-emoji="😎">😎</button>
+        <button class="emote-btn" data-emoji="😂">😂</button>
+        <button class="emote-btn" data-emoji="💩">💩</button>
+        <button class="emote-btn" data-emoji="🔥">🔥</button>
+        <button class="emote-btn" data-emoji="💀">💀</button>
+        <button class="emote-btn" data-emoji="👑">👑</button>
+      </div>
+    </div>
   </div>
 
   <audio id="remoteAudio" autoplay></audio>
@@ -572,6 +654,13 @@
     let p1EmoteData = null;
     let p2EmoteData = null;
 
+    let smokeParticles = [];
+
+    function toggleModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.toggle('open');
+    }
+
     function triggerEmote(emoji) {
       if (isHost) {
         p1EmoteData = { emoji: emoji, opacity: 1.0, offsetY: 0 };
@@ -580,6 +669,7 @@
           conn.send({ type: 'EMOTE', emoji: emoji });
         }
       }
+      toggleModal('emoteModal');
     }
 
     const emoteButtons = document.querySelectorAll('.emote-btn');
@@ -589,8 +679,6 @@
         e.stopPropagation();
         initAudio();
         const emoji = btn.getAttribute('data-emoji');
-        btn.classList.add('active');
-        setTimeout(() => btn.classList.remove('active'), 150);
         triggerEmote(emoji);
       };
 
@@ -662,65 +750,65 @@
       }
     }
 
-    /* REALISTIC SCI-FI JET ENGINE BOOST SFX */
-    let boostSubOsc = null;
-    let boostHighOsc = null;
-    let boostGain = null;
-    let boostLfo = null;
+    /* REALISTIC NOISE THRUST BOOST SFX */
+    let boostNoiseNode = null;
+    let boostFilterNode = null;
+    let boostGainNode = null;
 
     function startBoostSound() {
       initAudio();
-      if (!audioCtx || boostSubOsc) return;
+      if (!audioCtx || boostNoiseNode) return;
 
-      const now = audioCtx.currentTime;
+      const bufferSize = audioCtx.sampleRate * 2;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
 
-      boostGain = audioCtx.createGain();
-      boostGain.gain.setValueAtTime(0.01, now);
-      boostGain.gain.linearRampToValueAtTime(0.12, now + 0.15);
+      boostNoiseNode = audioCtx.createBufferSource();
+      boostNoiseNode.buffer = buffer;
+      boostNoiseNode.loop = true;
 
-      boostSubOsc = audioCtx.createOscillator();
-      boostSubOsc.type = 'sawtooth';
-      boostSubOsc.frequency.setValueAtTime(60, now);
-      boostSubOsc.frequency.exponentialRampToValueAtTime(140, now + 0.4);
+      boostFilterNode = audioCtx.createBiquadFilter();
+      boostFilterNode.type = 'lowpass';
+      boostFilterNode.frequency.setValueAtTime(120, audioCtx.currentTime);
+      boostFilterNode.frequency.exponentialRampToValueAtTime(450, audioCtx.currentTime + 0.2);
 
-      boostHighOsc = audioCtx.createOscillator();
-      boostHighOsc.type = 'triangle';
-      boostHighOsc.frequency.setValueAtTime(180, now);
-      boostHighOsc.frequency.exponentialRampToValueAtTime(450, now + 0.4);
+      boostGainNode = audioCtx.createGain();
+      boostGainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      boostGainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 0.1);
 
-      boostLfo = audioCtx.createOscillator();
-      boostLfo.frequency.setValueAtTime(25, now);
-      const lfoGain = audioCtx.createGain();
-      lfoGain.gain.setValueAtTime(0.03, now);
+      boostNoiseNode.connect(boostFilterNode);
+      boostFilterNode.connect(boostGainNode);
+      boostGainNode.connect(audioCtx.destination);
 
-      boostLfo.connect(lfoGain);
-      lfoGain.connect(boostGain.gain);
-
-      boostSubOsc.connect(boostGain);
-      boostHighOsc.connect(boostGain);
-      boostGain.connect(audioCtx.destination);
-
-      boostSubOsc.start(now);
-      boostHighOsc.start(now);
-      boostLfo.start(now);
+      boostNoiseNode.start();
     }
 
     function stopBoostSound() {
-      if (boostGain && audioCtx) {
-        const now = audioCtx.currentTime;
-        boostGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+      if (boostGainNode && audioCtx) {
+        boostGainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
         setTimeout(() => {
-          if (boostSubOsc) {
-            boostSubOsc.stop(); boostSubOsc.disconnect(); boostSubOsc = null;
+          if (boostNoiseNode) {
+            boostNoiseNode.stop();
+            boostNoiseNode.disconnect();
+            boostNoiseNode = null;
           }
-          if (boostHighOsc) {
-            boostHighOsc.stop(); boostHighOsc.disconnect(); boostHighOsc = null;
-          }
-          if (boostLfo) {
-            boostLfo.stop(); boostLfo.disconnect(); boostLfo = null;
-          }
-        }, 120);
+        }, 100);
       }
+    }
+
+    function triggerBoostStart() {
+      startBoostSound();
+      if (isHost) p1Boost = true;
+      else { p2Boost = true; sendClientInput(); }
+    }
+
+    function triggerBoostStop() {
+      stopBoostSound();
+      if (isHost) p1Boost = false;
+      else { p2Boost = false; sendClientInput(); }
     }
 
     function playHitSound() {
@@ -739,9 +827,7 @@
       osc.start(now); osc.stop(now + 0.3);
     }
 
-    let localStream = null;
-    let mediaCall = null;
-    let isMicActive = false;
+    let localStream = null, mediaCall = null, isMicActive = false;
 
     async function toggleVoiceChat() {
       if (!isMicActive) {
@@ -831,6 +917,10 @@
       conn.on('data', (data) => {
         if (data.type === 'CHAT') return appendMessage(data.sender, data.text, data.senderType);
 
+        if (data.type === 'RESTART_REQUEST') {
+          if (isHost) resetGame();
+        }
+
         if (isHost) {
           if (data.type === 'INPUT') {
             if (data.dir === 'UP' && dy2 === 0) { dx2 = 0; dy2 = -1; }
@@ -849,6 +939,7 @@
             score = data.score; score2 = data.score2;
             p1Lives = data.p1Lives; p2Lives = data.p2Lives;
             p1DoubleTimer = data.p1DoubleTimer; p2DoubleTimer = data.p2DoubleTimer;
+            p1Boost = data.p1Boost; p2Boost = data.p2Boost;
             isGameOver = data.isGameOver; winnerMessage = data.winnerMessage;
             
             if (data.p1Emote) p1EmoteData = { emoji: data.p1Emote, opacity: 1.0, offsetY: 0 };
@@ -866,6 +957,30 @@
 
     let tickCounter = 0;
     function start() { gameLoop = setInterval(update, 50); }
+
+    function updateSmoke() {
+      smokeParticles.forEach((p, index) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.size += 0.2;
+        p.alpha -= 0.04;
+        if (p.alpha <= 0) {
+          smokeParticles.splice(index, 1);
+        }
+      });
+    }
+
+    function createSmoke(x, y, color) {
+      smokeParticles.push({
+        x: x * gridSize + gridSize / 2,
+        y: y * gridSize + gridSize / 2,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5,
+        size: Math.random() * 4 + 4,
+        alpha: 0.8,
+        color: color
+      });
+    }
 
     function update() {
       if (isGameOver) return;
@@ -885,6 +1000,15 @@
         if (p2Lives > 0 && (p2Boost || tickCounter % 2 === 0)) {
           let event = movePlayer2();
           if (event) currentAudioEvent = event;
+        }
+
+        if (p1Boost && p1Lives > 0 && snake.length > 0) {
+          const tail = snake[snake.length - 1];
+          createSmoke(tail.x, tail.y, 'rgba(16, 185, 129,');
+        }
+        if (p2Boost && p2Lives > 0 && snake2.length > 0) {
+          const tail2 = snake2[snake2.length - 1];
+          createSmoke(tail2.x, tail2.y, 'rgba(59, 130, 246,');
         }
 
         if (currentAudioEvent === 'EAT_NORMAL') playEatSound(false);
@@ -911,6 +1035,7 @@
             snake, snake2, food, doubleFood,
             score, score2, p1Lives, p2Lives,
             p1DoubleTimer, p2DoubleTimer,
+            p1Boost, p2Boost,
             p1Emote: syncP1Emote, p2Emote: syncP2Emote,
             isGameOver, winnerMessage,
             audioEvent: currentAudioEvent
@@ -969,6 +1094,14 @@
     function draw() {
       ctx.fillStyle = '#030712';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      updateSmoke();
+      smokeParticles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + p.alpha + ')';
+        ctx.fill();
+      });
 
       ctx.fillStyle = '#ef4444'; ctx.shadowColor = '#ef4444'; ctx.shadowBlur = 8;
       ctx.fillRect(food.x * gridSize + 1, food.y * gridSize + 1, gridSize - 2, gridSize - 2);
@@ -1069,11 +1202,22 @@
       doubleFood = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
     }
 
+    function requestRestart() {
+      if (isHost) {
+        resetGame();
+      } else {
+        if (conn && conn.open) {
+          conn.send({ type: 'RESTART_REQUEST' });
+        }
+      }
+    }
+
     function resetGame() {
       p1Lives = 3; p2Lives = 3; score = 0; score2 = 0;
       p1DoubleTimer = 0; p2DoubleTimer = 0; isGameOver = false;
       winnerMessage = ""; doubleFood = null;
       p1EmoteData = null; p2EmoteData = null;
+      smokeParticles = [];
 
       resetPlayer1(); resetPlayer2(); spawnFood();
       updateUI();
@@ -1109,18 +1253,14 @@
       if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') changeDir('LEFT');
       if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') changeDir('RIGHT');
       if (e.key === 'Shift' || e.key === ' ') {
-        startBoostSound();
-        if (isHost) p1Boost = true;
-        else { p2Boost = true; sendClientInput(); }
+        triggerBoostStart();
       }
     });
 
     document.addEventListener('keyup', (e) => {
       if (document.activeElement === chatInput) return;
       if (e.key === 'Shift' || e.key === ' ') {
-        stopBoostSound();
-        if (isHost) p1Boost = false;
-        else { p2Boost = false; sendClientInput(); }
+        triggerBoostStop();
       }
     });
 
@@ -1128,8 +1268,11 @@
       if (conn && conn.open) conn.send({ type: 'INPUT', dir: dir, boost: p2Boost });
     }
 
+    /* GESTURE TOUCH CONTROLS (SWIPE & TAP-AND-HOLD BOOST) */
     let touchStartX = 0;
     let touchStartY = 0;
+    let holdTimer = null;
+    let isHoldingBoost = false;
 
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
@@ -1137,25 +1280,57 @@
       const touch = e.touches[0];
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
+      isHoldingBoost = false;
+
+      // Start hold timer for boost
+      clearTimeout(holdTimer);
+      holdTimer = setTimeout(() => {
+        isHoldingBoost = true;
+        triggerBoostStart();
+      }, 150); // 150ms hold triggers boost
     }, { passive: false });
 
-    canvas.addEventListener('touchend', (e) => {
+    canvas.addEventListener('touchmove', (e) => {
       e.preventDefault();
-      const touch = e.changedTouches[0];
+      const touch = e.touches[0];
       const deltaX = touch.clientX - touchStartX;
       const deltaY = touch.clientY - touchStartY;
 
-      if (Math.abs(deltaX) > 20 || Math.abs(deltaY) > 20) {
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
-          if (deltaX > 0) changeDir('RIGHT');
-          else changeDir('LEFT');
-        } else {
-          if (deltaY > 0) changeDir('DOWN');
-          else changeDir('UP');
+      // If user moves finger significantly, cancel hold timer and stop boost
+      if (Math.hypot(deltaX, deltaY) > 10) {
+        clearTimeout(holdTimer);
+        if (isHoldingBoost) {
+          isHoldingBoost = false;
+          triggerBoostStop();
         }
       }
     }, { passive: false });
 
+    canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      clearTimeout(holdTimer);
+
+      if (isHoldingBoost) {
+        isHoldingBoost = false;
+        triggerBoostStop();
+      } else {
+        const touch = e.changedTouches[0];
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+
+        if (Math.abs(deltaX) > 15 || Math.abs(deltaY) > 15) {
+          if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX > 0) changeDir('RIGHT');
+            else changeDir('LEFT');
+          } else {
+            if (deltaY > 0) changeDir('DOWN');
+            else changeDir('UP');
+          }
+        }
+      }
+    }, { passive: false });
+
+    /* JOYSTICK & BOOST BUTTON LOGIC */
     const joystick = document.getElementById('joystick');
     const stick = document.getElementById('stick');
     const boostBtn = document.getElementById('boostBtn');
@@ -1206,7 +1381,7 @@
       const centerY = rect.top + rect.height / 2;
       let deltaX = touch.clientX - centerX;
       let deltaY = touch.clientY - centerY;
-      const distance = Math.min(Math.hypot(deltaX, deltaY), 28);
+      const distance = Math.min(Math.hypot(deltaX, deltaY), 32);
       const angle = Math.atan2(deltaY, deltaX);
       
       stick.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
@@ -1227,10 +1402,8 @@
       for (let touch of e.changedTouches) {
         if (boostTouchId === null) {
           boostTouchId = touch.identifier;
-          startBoostSound();
+          triggerBoostStart();
           boostBtn.classList.add('active');
-          if (isHost) p1Boost = true;
-          else { p2Boost = true; sendClientInput(); }
           break;
         }
       }
@@ -1241,10 +1414,8 @@
       for (let touch of e.changedTouches) {
         if (touch.identifier === boostTouchId) {
           boostTouchId = null;
-          stopBoostSound();
+          triggerBoostStop();
           boostBtn.classList.remove('active');
-          if (isHost) p1Boost = false;
-          else { p2Boost = false; sendClientInput(); }
           break;
         }
       }
