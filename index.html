@@ -9,7 +9,7 @@
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   
   <style>
-    /* ==================== PRELOADER STYLES ==================== */
+    /* ==================== PRELOADER STYLES (RIPPLE EFFECT) ==================== */
     #preloader {
       position: fixed;
       top: 0;
@@ -26,15 +26,57 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    .loader-spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(255, 255, 255, 0.1);
-      border-top: 4px solid #ff5722;
+    /* Ripple Loader Container */
+    .ripple-loader {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 20px;
+    }
+
+    /* Ripple Elements */
+    .ripple-loader span {
+      position: absolute;
+      border: 4px solid #60a5fa;
+      opacity: 1;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 15px;
-      transition: border-top-color 0.3s ease;
+      animation: ripple 1.8s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      transition: border-color 0.3s ease;
+    }
+
+    .ripple-loader span:nth-child(2) {
+      animation-delay: -0.9s;
+    }
+
+    @keyframes ripple {
+      0% {
+        top: 32px;
+        left: 32px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+      4.9% {
+        top: 32px;
+        left: 32px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+      5% {
+        top: 32px;
+        left: 32px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+      100% {
+        top: 0px;
+        left: 0px;
+        width: 64px;
+        height: 64px;
+        opacity: 0;
+      }
     }
 
     .brand-title {
@@ -78,11 +120,6 @@
     .status-dot.down {
       background-color: #ff3b30;
       box-shadow: 0 0 10px #ff3b30;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     #preloader.preloader-hidden {
@@ -473,9 +510,12 @@
 </head>
 <body>
 
-  <!-- ==================== PRELOADER OVERLAY ==================== -->
+  <!-- ==================== PRELOADER OVERLAY (RIPPLE EFFECT) ==================== -->
   <div id="preloader">
-    <div class="loader-spinner" id="loaderSpinner"></div>
+    <div class="ripple-loader" id="rippleLoader">
+      <span></span>
+      <span></span>
+    </div>
     <h1 class="brand-title">Jepong Devxyz</h1>
     
     <div class="status-badge">
@@ -578,7 +618,7 @@
       const preloader = document.getElementById('preloader');
       const statusDot = document.getElementById('statusDot');
       const statusText = document.getElementById('loaderStatusText');
-      const spinner = document.getElementById('loaderSpinner');
+      const rippleSpans = document.querySelectorAll('#rippleLoader span');
 
       const startTime = Date.now();
       let isSiteActive = false;
@@ -627,7 +667,11 @@
         statusDot.className = 'status-dot down';
         statusText.innerText = 'Down / Offline';
         statusText.style.color = '#ff3b30';
-        spinner.style.borderTopColor = '#ff3b30';
+        
+        // Gagawing pula ang kulay ng ripple rings kapag offline
+        rippleSpans.forEach(span => {
+          span.style.borderColor = '#ff3b30';
+        });
       }
     });
   </script>
@@ -1282,12 +1326,11 @@
       touchStartY = touch.clientY;
       isHoldingBoost = false;
 
-      // Start hold timer for boost
       clearTimeout(holdTimer);
       holdTimer = setTimeout(() => {
         isHoldingBoost = true;
         triggerBoostStart();
-      }, 150); // 150ms hold triggers boost
+      }, 150);
     }, { passive: false });
 
     canvas.addEventListener('touchmove', (e) => {
@@ -1296,7 +1339,6 @@
       const deltaX = touch.clientX - touchStartX;
       const deltaY = touch.clientY - touchStartY;
 
-      // If user moves finger significantly, cancel hold timer and stop boost
       if (Math.hypot(deltaX, deltaY) > 10) {
         clearTimeout(holdTimer);
         if (isHoldingBoost) {
