@@ -128,7 +128,7 @@
       pointer-events: none;
     }
 
-    /* ==================== GAME STYLES ==================== */
+    /* ==================== GAME STYLES (FULL-BLEED EDGES) ==================== */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -143,25 +143,15 @@
       height: 100%;
       height: 100dvh;
       overflow: hidden;
-    }
-
-    body {
-      background-color: #0b0f19;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
+      background-color: #030712;
     }
 
     .game-card {
       background: #111827;
-      border: 1px solid #1f2937;
+      border: none;
       border-radius: 0px;
-      padding: 8px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+      padding: 0; /* Inalis ang padding para sagad sa edges */
+      box-shadow: none;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -179,7 +169,7 @@
       font-weight: 700;
       font-size: 13px;
       letter-spacing: 0.5px;
-      padding: 0 4px;
+      padding: 6px 12px 0 12px;
     }
 
     .player-status-box {
@@ -199,6 +189,7 @@
       gap: 2px;
       margin-bottom: 2px;
       font-size: 10px;
+      padding: 6px 8px 0 8px;
     }
 
     .room-inputs {
@@ -237,6 +228,7 @@
       gap: 4px;
       width: 100%;
       margin-bottom: 4px;
+      padding: 0 8px;
     }
 
     .voice-btn {
@@ -262,6 +254,7 @@
       gap: 6px;
       width: 100%;
       margin-bottom: 4px;
+      padding: 0 8px;
     }
 
     .action-btn {
@@ -282,36 +275,38 @@
       text-align: center;
     }
 
+    /* FULL WIDTH CANVAS CONTAINER */
     .canvas-container {
-      width: 100%;
+      width: 100vw;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
       flex: 1;
       min-height: 0;
-      padding: 4px;
+      padding: 0; /* Tinanggal ang gap sa magkabilang gilid */
     }
 
     canvas {
       background-color: #030712;
-      border: 2px solid #374151;
-      border-radius: 8px;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
-      width: 100%;
-      height: 100%;
-      max-width: 100vw;
-      aspect-ratio: 1 / 1;
-      object-fit: contain;
+      border-left: none;  /* Tinanggal ang border para totally sagad sa gilid */
+      border-right: none;
+      border-top: 2px solid #374151;
+      border-bottom: 2px solid #374151;
+      border-radius: 0;
+      width: 100vw;       /* Sagad 100% sa lapad ng screen */
+      height: 100vw;      /* Maintains square aspect */
+      max-height: 100%;
+      object-fit: fill;
     }
 
     .controls-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-around;
-      width: 100%;
+      width: 100vw;
       margin-top: auto;
-      padding: 10px 0;
+      padding: 10px 16px;
       gap: 20px;
     }
 
@@ -367,7 +362,7 @@
 
     .restart-btn {
       display: none;
-      margin-top: 6px;
+      margin: 6px 8px 6px 8px;
       background: #ef4444;
       border: none;
       color: #ffffff;
@@ -376,7 +371,7 @@
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
-      width: 100%;
+      width: calc(100vw - 16px);
       box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
     }
 
@@ -668,7 +663,6 @@
         statusText.innerText = 'Down / Offline';
         statusText.style.color = '#ff3b30';
         
-        // Gagawing pula ang kulay ng ripple rings kapag offline
         rippleSpans.forEach(span => {
           span.style.borderColor = '#ff3b30';
         });
@@ -1312,65 +1306,76 @@
       if (conn && conn.open) conn.send({ type: 'INPUT', dir: dir, boost: p2Boost });
     }
 
-    /* GESTURE TOUCH CONTROLS (SWIPE & TAP-AND-HOLD BOOST) */
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let holdTimer = null;
-    let isHoldingBoost = false;
+    /* ENHANCED GESTURE TOUCH CONTROLS (SWIPE + TAP-AND-HOLD BOOST) */
+    let activeGestureTouchId = null;
+    let gestureStartX = 0;
+    let gestureStartY = 0;
+    let gestureHoldTimer = null;
+    let isGestureBoosting = false;
 
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       initAudio();
-      const touch = e.touches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-      isHoldingBoost = false;
 
-      clearTimeout(holdTimer);
-      holdTimer = setTimeout(() => {
-        isHoldingBoost = true;
-        triggerBoostStart();
-      }, 150);
+      if (activeGestureTouchId === null) {
+        const touch = e.changedTouches[0];
+        activeGestureTouchId = touch.identifier;
+        gestureStartX = touch.clientX;
+        gestureStartY = touch.clientY;
+
+        clearTimeout(gestureHoldTimer);
+        gestureHoldTimer = setTimeout(() => {
+          isGestureBoosting = true;
+          triggerBoostStart();
+        }, 150);
+      }
     }, { passive: false });
 
     canvas.addEventListener('touchmove', (e) => {
       e.preventDefault();
-      const touch = e.touches[0];
-      const deltaX = touch.clientX - touchStartX;
-      const deltaY = touch.clientY - touchStartY;
+      if (activeGestureTouchId === null) return;
 
-      if (Math.hypot(deltaX, deltaY) > 10) {
-        clearTimeout(holdTimer);
-        if (isHoldingBoost) {
-          isHoldingBoost = false;
-          triggerBoostStop();
-        }
-      }
-    }, { passive: false });
+      for (let touch of e.changedTouches) {
+        if (touch.identifier === activeGestureTouchId) {
+          const deltaX = touch.clientX - gestureStartX;
+          const deltaY = touch.clientY - gestureStartY;
 
-    canvas.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      clearTimeout(holdTimer);
+          if (Math.abs(deltaX) > 20 || Math.abs(deltaY) > 20) {
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+              if (deltaX > 0) changeDir('RIGHT');
+              else changeDir('LEFT');
+            } else {
+              if (deltaY > 0) changeDir('DOWN');
+              else changeDir('UP');
+            }
 
-      if (isHoldingBoost) {
-        isHoldingBoost = false;
-        triggerBoostStop();
-      } else {
-        const touch = e.changedTouches[0];
-        const deltaX = touch.clientX - touchStartX;
-        const deltaY = touch.clientY - touchStartY;
-
-        if (Math.abs(deltaX) > 15 || Math.abs(deltaY) > 15) {
-          if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            if (deltaX > 0) changeDir('RIGHT');
-            else changeDir('LEFT');
-          } else {
-            if (deltaY > 0) changeDir('DOWN');
-            else changeDir('UP');
+            gestureStartX = touch.clientX;
+            gestureStartY = touch.clientY;
           }
+          break;
         }
       }
     }, { passive: false });
+
+    const handleGestureEnd = (e) => {
+      if (activeGestureTouchId === null) return;
+
+      for (let touch of e.changedTouches) {
+        if (touch.identifier === activeGestureTouchId) {
+          clearTimeout(gestureHoldTimer);
+          activeGestureTouchId = null;
+
+          if (isGestureBoosting) {
+            isGestureBoosting = false;
+            triggerBoostStop();
+          }
+          break;
+        }
+      }
+    };
+
+    canvas.addEventListener('touchend', handleGestureEnd, { passive: false });
+    canvas.addEventListener('touchcancel', handleGestureEnd, { passive: false });
 
     /* JOYSTICK & BOOST BUTTON LOGIC */
     const joystick = document.getElementById('joystick');
